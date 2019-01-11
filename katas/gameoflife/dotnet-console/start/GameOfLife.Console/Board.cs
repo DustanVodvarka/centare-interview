@@ -9,6 +9,7 @@ namespace GameOfLife.Console
     {
         public Board(CellState[,] initialState)
         {
+            State = initialState;
         }
 
         /// <summary>
