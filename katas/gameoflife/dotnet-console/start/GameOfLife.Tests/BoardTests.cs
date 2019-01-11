@@ -1,6 +1,5 @@
 ﻿using GameOfLife.Console;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace GameOfLife.Tests
 {
@@ -21,8 +20,29 @@ namespace GameOfLife.Tests
         [TestMethod]
         public void It_should_not_crash()
         {
-            var board = new Board(new CellState[0, 0]);
+            var board = new Board(new string[0, 0]);
             board.Update();
         }
+
+        [TestMethod]
+        public void Constructor_should_set_state()
+        {
+            var board = new Board(new [,]
+            {
+                { ".", ".", "." },
+                { "*", "*", "*" },
+                { ".", ".", "." }
+            });
+            CollectionAssert.AreEquivalent(
+                new[,]
+                {
+                    { ".", ".", "." },
+                    { "*", "*", "*" },
+                    { ".", ".", "." }
+                },
+                board.Cells);
+        }
+
+        // TODO: Add more tests
     }
 }

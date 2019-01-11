@@ -7,58 +7,58 @@ namespace GameOfLife.Console
     /// </summary>
     public class Board
     {
-        public Board(CellState[,] initialState)
+        public Board(string[,] cells)
         {
-            State = initialState ?? throw new ArgumentNullException(nameof(initialState));
+            Cells = cells ?? throw new ArgumentNullException(nameof(cells));
         }
 
         /// <summary>
         /// Gets the current state of all cells on the board
         /// </summary>
-        public CellState[,] State { get; private set; }
+        public string[,] Cells { get; private set; }
 
         /// <summary>
-        /// Calculates the next generation of the board and updates the board <see cref="State" />
+        /// Calculates the next generation of the board and updates the board <see cref="Cells" />
         /// </summary>
         public void Update()
         {
-            var newState = new CellState[State.GetLength(0), State.GetLength(1)];
+            var newState = new string[Cells.GetLength(0), Cells.GetLength(1)];
 
-            for (var row = 0; row < State.GetLength(0); row++)
+            for (var row = 0; row < Cells.GetLength(0); row++)
             {
-                for (var col = 0; col < State.GetLength(1); col++)
+                for (var col = 0; col < Cells.GetLength(1); col++)
                 {
-                    var liveCount = CountLiveNeighbors(row, col, State);
+                    var liveCount = CountLiveNeighbors(row, col, Cells);
 
-                    if (State[row, col] == CellState.Live)
+                    if (Cells[row, col] == "*")
                     {
                         if (liveCount < 2 || liveCount > 3)
                         {
-                            newState[row, col] = CellState.Dead;
+                            newState[row, col] = ".";
                         }
                         else
                         {
-                            newState[row, col] = State[row, col];
+                            newState[row, col] = Cells[row, col];
                         }
                     }
                     else
                     {
                         if (liveCount == 3)
                         {
-                            newState[row, col] = CellState.Live;
+                            newState[row, col] = "*";
                         }
                         else
                         {
-                            newState[row, col] = State[row, col];
+                            newState[row, col] = Cells[row, col];
                         }
                     }
                 }
             }
 
-            State = newState;
+            Cells = newState;
         }
 
-        private int CountLiveNeighbors(int row, int col, CellState[,] state)
+        private int CountLiveNeighbors(int row, int col, string[,] cells)
         {
             var count = 0;
 
@@ -67,36 +67,36 @@ namespace GameOfLife.Console
             {
                 if (col > 0)
                 {
-                    count += state[row - 1, col - 1] == CellState.Live ? 1 : 0;
+                    count += cells[row - 1, col - 1] == "*" ? 1 : 0;
                 }
-                count += state[row - 1, col] == CellState.Live ? 1 : 0;
-                if (col < state.GetLength(1) - 1)
+                count += cells[row - 1, col] == "*" ? 1 : 0;
+                if (col < cells.GetLength(1) - 1)
                 {
-                    count += state[row - 1, col + 1] == CellState.Live ? 1 : 0;
+                    count += cells[row - 1, col + 1] == "*" ? 1 : 0;
                 }
             }
 
             // current row
             if (col > 0)
             {
-                count += state[row, col - 1] == CellState.Live ? 1 : 0;
+                count += cells[row, col - 1] == "*" ? 1 : 0;
             }
-            if (col < state.GetLength(1) - 1)
+            if (col < cells.GetLength(1) - 1)
             {
-                count += state[row, col + 1] == CellState.Live ? 1 : 0;
+                count += cells[row, col + 1] == "*" ? 1 : 0;
             }
 
             // one row below
-            if (row < state.GetLength(0) - 1)
+            if (row < cells.GetLength(0) - 1)
             {
                 if (col > 0)
                 {
-                    count += state[row + 1, col - 1] == CellState.Live ? 1 : 0;
+                    count += cells[row + 1, col - 1] == "*" ? 1 : 0;
                 }
-                count += state[row + 1, col] == CellState.Live ? 1 : 0;
-                if (col < state.GetLength(1) - 1)
+                count += cells[row + 1, col] == "*" ? 1 : 0;
+                if (col < cells.GetLength(1) - 1)
                 {
-                    count += state[row + 1, col + 1] == CellState.Live ? 1 : 0;
+                    count += cells[row + 1, col + 1] == "*" ? 1 : 0;
                 }
             }
 

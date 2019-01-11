@@ -28,17 +28,17 @@ namespace GameOfLife.Tests
         [TestMethod]
         public void Update_on_empty_board_should_return_empty_board()
         {
-            var board = new Board(new CellState[0, 0]);
+            var board = new Board(new string[0, 0]);
             board.Update();
-            CollectionAssert.AreEquivalent(new CellState[0, 0], board.State);
+            CollectionAssert.AreEquivalent(new string[0, 0], board.Cells);
         }
 
         [TestMethod]
         public void Update_on_board_with_zero_length_rows_should_return_board_with_same_dimensions()
         {
-            var board = new Board(new CellState[10, 0]);
+            var board = new Board(new string[10, 0]);
             board.Update();
-            CollectionAssert.AreEquivalent(new CellState[10, 0], board.State);
+            CollectionAssert.AreEquivalent(new string[10, 0], board.Cells);
         }
 
         [TestMethod]
@@ -46,17 +46,17 @@ namespace GameOfLife.Tests
         {
             var initialState = new[,]
             {
-                {CellState.Dead, CellState.Dead, CellState.Dead},
-                {CellState.Dead, CellState.Live, CellState.Dead}, // Second cell in row has no live neighbors, should die
-                {CellState.Dead, CellState.Dead, CellState.Dead},
-                {CellState.Dead, CellState.Live, CellState.Live}, // Second cell in row has one live neighbor, should die
-                {CellState.Dead, CellState.Dead, CellState.Dead}
+                {".", ".", "."},
+                {".", "*", "."}, // Second cell in row has no live neighbors, should die
+                {".", ".", "."},
+                {".", "*", "*"}, // Second cell in row has one live neighbor, should die
+                {".", ".", "."}
             };
 
             var board = new Board(initialState);
             board.Update();
-            Assert.AreEqual(CellState.Dead, board.State[1, 1]);
-            Assert.AreEqual(CellState.Dead, board.State[3, 1]);
+            Assert.AreEqual(".", board.Cells[1, 1]);
+            Assert.AreEqual(".", board.Cells[3, 1]);
         }
 
         [TestMethod]
@@ -64,14 +64,14 @@ namespace GameOfLife.Tests
         {
             var initialState = new[,]
             {
-                {CellState.Live, CellState.Live, CellState.Dead},
-                {CellState.Dead, CellState.Live, CellState.Dead},
-                {CellState.Live, CellState.Dead, CellState.Live}
+                {"*", "*", "."},
+                {".", "*", "."},
+                {"*", ".", "*"}
             };
 
             var board = new Board(initialState);
             board.Update();
-            Assert.AreEqual(CellState.Dead, board.State[1, 1]);
+            Assert.AreEqual(".", board.Cells[1, 1]);
         }
 
         [TestMethod]
@@ -79,17 +79,17 @@ namespace GameOfLife.Tests
         {
             var initialState = new[,]
             {
-                {CellState.Dead, CellState.Dead, CellState.Dead},
-                {CellState.Dead, CellState.Live, CellState.Dead}, // Second cell has two live neighbors, should stay alive
-                {CellState.Live, CellState.Dead, CellState.Live},
-                {CellState.Dead, CellState.Live, CellState.Dead}, // Second cell has three live neighbors, should stay alive
-                {CellState.Dead, CellState.Live, CellState.Dead} 
+                {".", ".", "."},
+                {".", "*", "."}, // Second cell has two live neighbors, should stay alive
+                {"*", ".", "*"},
+                {".", "*", "."}, // Second cell has three live neighbors, should stay alive
+                {".", "*", "."} 
             };
 
             var board = new Board(initialState);
             board.Update();
-            Assert.AreEqual(CellState.Live, board.State[1, 1]);
-            Assert.AreEqual(CellState.Live, board.State[3, 1]);
+            Assert.AreEqual("*", board.Cells[1, 1]);
+            Assert.AreEqual("*", board.Cells[3, 1]);
         }
         
         [TestMethod]
@@ -97,17 +97,17 @@ namespace GameOfLife.Tests
         {
             var initialState = new[,]
             {
-                {CellState.Dead, CellState.Live, CellState.Dead}, // First cell in row has one live neighbor, should stay dead
-                {CellState.Dead, CellState.Dead, CellState.Dead},
-                {CellState.Dead, CellState.Live, CellState.Dead}, // First cell in row has two live neighbors, should stay dead
-                {CellState.Dead, CellState.Live, CellState.Dead},
-                {CellState.Dead, CellState.Dead, CellState.Dead}
+                {".", "*", "."}, // First cell in row has one live neighbor, should stay dead
+                {".", ".", "."},
+                {".", "*", "."}, // First cell in row has two live neighbors, should stay dead
+                {".", "*", "."},
+                {".", ".", "."}
             };
 
             var board = new Board(initialState);
             board.Update();
-            Assert.AreEqual(CellState.Dead, board.State[0, 0]);
-            Assert.AreEqual(CellState.Dead, board.State[2, 0]);
+            Assert.AreEqual(".", board.Cells[0, 0]);
+            Assert.AreEqual(".", board.Cells[2, 0]);
         }
 
         [TestMethod]
@@ -115,18 +115,18 @@ namespace GameOfLife.Tests
         {
             var initialState = new[,]
             {
-                {CellState.Dead, CellState.Live, CellState.Dead},
-                {CellState.Live, CellState.Dead, CellState.Live}, // Middle cell in this row has 4 neighbors, should stay dead
-                {CellState.Dead, CellState.Live, CellState.Dead},
-                {CellState.Live, CellState.Live, CellState.Dead},
-                {CellState.Dead, CellState.Dead, CellState.Dead}, // Middle cell in this row has 5 neighbors, should stay dead
-                {CellState.Live, CellState.Live, CellState.Live},
+                {".", "*", "."},
+                {"*", ".", "*"}, // Middle cell in this row has 4 neighbors, should stay dead
+                {".", "*", "."},
+                {"*", "*", "."},
+                {".", ".", "."}, // Middle cell in this row has 5 neighbors, should stay dead
+                {"*", "*", "*"},
             };
 
             var board = new Board(initialState);
             board.Update();
-            Assert.AreEqual(CellState.Dead, board.State[1, 1]);
-            Assert.AreEqual(CellState.Dead, board.State[4, 1]);
+            Assert.AreEqual(".", board.Cells[1, 1]);
+            Assert.AreEqual(".", board.Cells[4, 1]);
         }
 
         [TestMethod]
@@ -134,14 +134,14 @@ namespace GameOfLife.Tests
         {
             var initialState = new[,]
             {
-                {CellState.Dead, CellState.Live, CellState.Dead},
-                {CellState.Live, CellState.Dead, CellState.Live}, // Middle cell in this row has 3 neighbors, should be made live
-                {CellState.Dead, CellState.Dead, CellState.Dead}
+                {".", "*", "."},
+                {"*", ".", "*"}, // Middle cell in this row has 3 neighbors, should be made live
+                {".", ".", "."}
             };
 
             var board = new Board(initialState);
             board.Update();
-            Assert.AreEqual(CellState.Live, board.State[1, 1]);
+            Assert.AreEqual("*", board.Cells[1, 1]);
         }
     }
 }
