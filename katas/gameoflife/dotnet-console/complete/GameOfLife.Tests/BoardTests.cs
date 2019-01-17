@@ -26,11 +26,21 @@ namespace GameOfLife.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Constructor_should_throw_ArgumentException_if_initial_state_contains_invalid_characters()
+        {
+            var board = new Board(new [,]
+            {
+                { ".", "*", "x" }
+            });
+        }
+
+        [TestMethod]
         public void Update_on_empty_board_should_return_empty_board()
         {
             var board = new Board(new string[0, 0]);
             board.Update();
-            CollectionAssert.AreEquivalent(new string[0, 0], board.Cells);
+            CollectionAssert.AreEqual(new string[0, 0], board.Cells);
         }
 
         [TestMethod]
@@ -38,7 +48,7 @@ namespace GameOfLife.Tests
         {
             var board = new Board(new string[10, 0]);
             board.Update();
-            CollectionAssert.AreEquivalent(new string[10, 0], board.Cells);
+            CollectionAssert.AreEqual(new string[10, 0], board.Cells);
         }
 
         [TestMethod]

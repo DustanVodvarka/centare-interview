@@ -9,7 +9,24 @@ namespace GameOfLife.Console
     {
         public Board(string[,] cells)
         {
-            Cells = cells ?? throw new ArgumentNullException(nameof(cells));
+            if (cells == null)
+            {
+                throw new ArgumentNullException(nameof(cells));
+            }
+
+            for (var x = 0; x < cells.GetLength(0); x++)
+            {
+                for (var y = 0; y < cells.GetLength(1); y++)
+                {
+                    if (cells[x, y] != "." && cells[x, y] != "*")
+                    {
+                        throw new ArgumentException(
+                            $"Invalid cell value '{cells[x, y]}' encountered at position [{x}, {y}]. Only the characters '.' and '*' are allowed.");
+                    }
+                }
+            }
+
+            Cells = cells;
         }
 
         /// <summary>
@@ -22,7 +39,7 @@ namespace GameOfLife.Console
         /// </summary>
         public void Update()
         {
-            var newState = new string[Cells.GetLength(0), Cells.GetLength(1)];
+            var nextGen = new string[Cells.GetLength(0), Cells.GetLength(1)];
 
             for (var row = 0; row < Cells.GetLength(0); row++)
             {
@@ -34,28 +51,28 @@ namespace GameOfLife.Console
                     {
                         if (liveCount < 2 || liveCount > 3)
                         {
-                            newState[row, col] = ".";
+                            nextGen[row, col] = ".";
                         }
                         else
                         {
-                            newState[row, col] = Cells[row, col];
+                            nextGen[row, col] = Cells[row, col];
                         }
                     }
                     else
                     {
                         if (liveCount == 3)
                         {
-                            newState[row, col] = "*";
+                            nextGen[row, col] = "*";
                         }
                         else
                         {
-                            newState[row, col] = Cells[row, col];
+                            nextGen[row, col] = Cells[row, col];
                         }
                     }
                 }
             }
 
-            Cells = newState;
+            Cells = nextGen;
         }
 
         private int CountLiveNeighbors(int row, int col, string[,] cells)

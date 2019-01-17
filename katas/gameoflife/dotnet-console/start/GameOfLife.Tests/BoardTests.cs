@@ -18,9 +18,14 @@ namespace GameOfLife.Tests
     public class BoardTests
     {
         [TestMethod]
-        public void It_should_not_crash()
+        public void Update_should_not_crash()
         {
-            var board = new Board(new string[0, 0]);
+            var board = new Board(new [,]
+            {
+                { ".", ".", "." },
+                { ".", ".", "." },
+                { ".", ".", "." }
+            });
             board.Update();
         }
 

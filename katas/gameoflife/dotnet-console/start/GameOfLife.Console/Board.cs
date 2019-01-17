@@ -20,7 +20,16 @@
         /// </summary>
         public void Update()
         {
-            // TODO: Update the board state with the next generation
+            Cells = GetNextGeneration(Cells);
+        }
+
+        private string[,] GetNextGeneration(string[,] curGen)
+        {
+            var nextGen = new string[curGen.GetLength(0), curGen.GetLength(1)];
+
+            // TODO: Update nextGen with the next cell generation
+
+            return nextGen;
         }
     }
 }
