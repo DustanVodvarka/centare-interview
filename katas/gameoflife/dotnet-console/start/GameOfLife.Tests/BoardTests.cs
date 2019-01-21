@@ -38,7 +38,7 @@ namespace GameOfLife.Tests
                 { "*", "*", "*" },
                 { ".", ".", "." }
             });
-            CollectionAssert.AreEquivalent(
+            CollectionAssert.AreEqual(
                 new[,]
                 {
                     { ".", ".", "." },
